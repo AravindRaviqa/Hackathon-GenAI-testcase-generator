@@ -1,0 +1,33 @@
+# GitHub Configuration for QuestApp-AI Repository
+# Copy these settings to your .env file
+
+GITHUB_REPO=AravindRaviqa/QuestApp-AI
+
+# Add your GitHub Personal Access Token here (with repo read access)
+# Get this from: https://github.com/settings/tokens
+GITHUB_TOKEN=ghp_your_token_here
+
+# Slack Integration (Optional)
+# Get this from: Slack App Settings > Incoming Webhooks
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+
+# Microsoft Teams Integration (Optional)
+# Get this from: Teams Channel > Connectors > Incoming Webhook
+TEAMS_WEBHOOK_URL=https://your-org.webhook.office.com/webhookb2/YOUR/TEAMS/WEBHOOK
+
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Jira Configuration
+JIRA_URL=https://your-domain.atlassian.net
+JIRA_EMAIL=your_email@domain.com
+JIRA_API_TOKEN=your_jira_api_token_here
+
+# QMetry Configuration
+QMETRY_URL=https://your-domain.atlassian.net
+QMETRY_API_KEY=your_qmetry_api_key_here
+QMETRY_PROJECT_ID=your_project_id_here
+QMETRY_PROJECT_KEY=your_project_key_here
+
+# Flask Configuration
+SECRET_KEY=your_secret_key_here 

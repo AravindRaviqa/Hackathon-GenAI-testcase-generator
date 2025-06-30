@@ -85,4 +85,154 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("button.add-to-qmetry").forEach(btn => {
         btn.addEventListener("click", addToQMetry);
     });
-}); 
+});
+
+// Function to copy automation script to clipboard
+window.copyToClipboard = function() {
+    const codeElement = document.querySelector('pre code');
+    if (codeElement) {
+        const textToCopy = codeElement.textContent;
+        
+        // Use modern clipboard API if available
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(function() {
+                showCopySuccess();
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+                fallbackCopyTextToClipboard(textToCopy);
+            });
+        } else {
+            fallbackCopyTextToClipboard(textToCopy);
+        }
+    }
+};
+
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showCopySuccess();
+        } else {
+            showCopyError();
+        }
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+        showCopyError();
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function showCopySuccess() {
+    const button = document.querySelector('button[onclick="copyToClipboard()"]');
+    const originalText = button.textContent;
+    button.textContent = 'Copied!';
+    button.classList.remove('bg-gray-500', 'hover:bg-gray-600');
+    button.classList.add('bg-green-500', 'hover:bg-green-600');
+    
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove('bg-green-500', 'hover:bg-green-600');
+        button.classList.add('bg-gray-500', 'hover:bg-gray-600');
+    }, 2000);
+}
+
+function showCopyError() {
+    const button = document.querySelector('button[onclick="copyToClipboard()"]');
+    const originalText = button.textContent;
+    button.textContent = 'Failed!';
+    button.classList.remove('bg-gray-500', 'hover:bg-gray-600');
+    button.classList.add('bg-red-500', 'hover:bg-red-600');
+    
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove('bg-red-500', 'hover:bg-red-600');
+        button.classList.add('bg-gray-500', 'hover:bg-gray-600');
+    }, 2000);
+}
+
+// Function to test webhook connectivity
+window.testWebhooks = async function() {
+    const resultsDiv = document.getElementById('webhook-results');
+    const button = document.querySelector('button[onclick="testWebhooks()"]');
+    
+    // Disable button and show loading
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+    resultsDiv.innerHTML = '<div class="alert alert-info">Testing webhook connectivity...</div>';
+    
+    try {
+        const response = await fetch('/test-webhooks', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const results = await response.json();
+        
+        // Display results
+        let html = '<div class="row">';
+        
+        // Teams result
+        html += '<div class="col-md-6">';
+        html += '<div class="card">';
+        html += '<div class="card-header"><h6 class="mb-0"><i class="fab fa-microsoft"></i> Teams</h6></div>';
+        html += '<div class="card-body">';
+        if (results.teams.includes('✅')) {
+            html += '<div class="alert alert-success">' + results.teams + '</div>';
+        } else {
+            html += '<div class="alert alert-danger">' + results.teams + '</div>';
+        }
+        html += '</div></div></div>';
+        
+        // Slack result
+        html += '<div class="col-md-6">';
+        html += '<div class="card">';
+        html += '<div class="card-header"><h6 class="mb-0"><i class="fab fa-slack"></i> Slack</h6></div>';
+        html += '<div class="card-body">';
+        if (results.slack.includes('✅')) {
+            html += '<div class="alert alert-success">' + results.slack + '</div>';
+        } else {
+            html += '<div class="alert alert-danger">' + results.slack + '</div>';
+        }
+        html += '</div></div></div>';
+        
+        html += '</div>';
+        
+        // Add setup instructions if webhooks are not configured
+        if (results.teams.includes('not configured') || results.slack.includes('not configured')) {
+            html += '<div class="mt-3">';
+            html += '<div class="alert alert-warning">';
+            html += '<h6><i class="fas fa-info-circle"></i> Setup Required</h6>';
+            html += '<p>Follow the <a href="WEBHOOK_SETUP.md" target="_blank">Webhook Setup Guide</a> to configure your webhooks.</p>';
+            html += '</div>';
+            html += '</div>';
+        }
+        
+        resultsDiv.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error testing webhooks:', error);
+        resultsDiv.innerHTML = '<div class="alert alert-danger">Error testing webhooks: ' + error.message + '</div>';
+    } finally {
+        // Re-enable button
+        button.disabled = false;
+        button.innerHTML = '<i class="fas fa-vial"></i> Test Webhooks';
+    }
+}; 
