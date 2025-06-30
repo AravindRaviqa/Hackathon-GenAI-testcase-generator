@@ -30,7 +30,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 csrf = CSRFProtect(app)
 
 # Configure OpenAI
-openai_api_key = "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"
+openai_api_key = "Your OpenAI Key here"
 client = OpenAI(api_key=openai_api_key)
 
 # Initialize QMetry connection
