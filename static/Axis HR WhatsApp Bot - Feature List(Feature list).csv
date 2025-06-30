@@ -1,0 +1,92 @@
+Sl No,Feature,User story,Acceptance Criteria,Sub Tasks,"FE Effort 
+(in hours)","BE Effort 
+(in hours)",Estimation Comments
+,,,,,,,
+1,Employee Authentication via WhatsApp,"As an employee, I want to authenticate myself using an OTP sent to my official email, so that I can securely access HR-related information via WhatsApp.","1. The system should verify the employee's phone number against the database.
+2. Upon verification, the system should send an OTP to the employee’s official email.
+3. The employee must enter the correct OTP in WhatsApp to complete authentication.
+4. The bot should display an appropriate message if the phone number is not recognized in the database and prompt the employee to enter a valid phone number.",Implement User Registration Flow,,4,"Axis should provide APIs for triggering and verifying OTPs
+"
+,,,,Integrate API for validate user,,4,"The estimate is provided for API integration handling the user authentication flow based on the API response. The API should trigger an OTP to the user's email and return the OTP in the response, allowing us to validate whether the OTP entered by the user is correct or incorrect."
+,,,,Integrate API for OTP triggering,,4,
+,,,,Implement OTP Validation,,4,
+,,,,Confirm User Authentication & Proceeding to main flow,,4,
+,,,,Error Handling and Logs Monitoring,,4,
+2,Rule-Based Query Selection,"As an employee, I want to navigate through menu-based selection system in WhatsApp, so that I can easily find answers to HR-related queries without typing free-text inputs.","1. The bot should display a main menu with preloaded query categories.
+      a. FAQs (Text-based responses) for:
+             (1) Company policies and benefits
+             (2) Information about holidays, office timings, and organizational updates
+      b. Links to external portals for:
+             (1) HR policies, employee handbooks, and guidelines
+             (2) Portals where employees can check leave balances or apply for leave
+             (3) Instructions for marking attendance
+             (4) Steps to access salary slips and tax-related documents
+      c. Employee Wellness Resources:
+             (1) Contact details for employee assistance programs and mental health support
+             (2) Links to wellness resources
+      d. Employee Journeys:
+             (1) Preloaded messages for onboarding nudges, appraisal reminders, and promotion updates
+      e. Onboarding Support:
+             (1) Step-by-step guidance on HR onboarding processes (document submission, training schedules, IT setup, etc.)
+      f. Referral and Recruitment:
+             (1) Guidance on submitting referrals and applying for internal job postings
+             (2) Links to internal job listings if applicable
+2. Upon selecting a category, the bot should present structured sub-options with either:
+      a. Text-based responses for FAQs.
+      b. External links or step-by-step instructions for processes that require portal access.
+3. Employees must select from predefined menu options; free-text input should not be allowed.
+4. The bot should guide users back to the main menu if they select an invalid option or want to restart.",,,,For Employee Journeys currently predefined static messages common for all employees are considered. 
+,,,,"General Queries
+",,8,
+,,,,Policy and Guideline Access,,8,
+,,,,Leave and Attendance,,6,
+,,,,Payroll Information,,6,
+,,,,Employee Wellness Resources,,6,
+,,,,Employee Journeys,,6,
+,,,,Onboarding Support,,6,
+,,,,Referral and Recruitment,,6,
+3,Preloaded Rule-Based Queries,"As a vendor (Focaloid), I want to add predefined HR-related queries and options provided by Axis, so that the employees can navigate through structured menu selections in the WhatsApp bot.","1. The predefined queries should be added to the system during development and updated when Axis provides changes.
+2. There should be an option to add, modify, or remove preloaded queries when Axis provides updates.
+3. The bot should use these preloaded queries to respond to employee interactions.",Menu Management,4,4,
+,,,,Action handler management,4,4,
+,,,,Excel Sheet Upload / Download,4,4,
+4,Employee Database Integration,"As an vendor (Focaloid), I want the bot to validate employees using a backend database or an API provided by Axis MF, so that only authorized users can access HR services.","1. The bot should validate employees by matching their phone number against the Axis employee database.
+2. Axis must provide an API or database access for employee validation.
+3. If an employee fails authorization, they should not be allowed to interact with the bot or access any menu options.",,,,Estimate mentioned in first point
+5,Compliance and Security (PII Protection),"As a system administrator, I want to ensure the bot follows compliance regulations, so that employee data is secure.","1. The system should not store sensitive employee data beyond required authentication.
+2. All interactions should be logged securely for auditing purposes.
+3. Employee authentication should be secured with encryption.",,,8,A total of 24 hours is given for these activities based on previous project. Architect can review and modify if needed. 
+6,Concurrent User Handling,"As an Vendor (Focaloid), I want the bot to support multiple employees simultaneously, so that all users receive timely responses.
+","1. The bot should support at least 200-300 concurrent users without performance issues.
+2. The backend should be optimized to handle user base of 1000-1500 employees.
+3. The system should implement scalability measures to ensure performance does not degrade with increased usage.",,,8,
+7,Future-Ready Architecture (Phase 2 Enhancements),"As a vendor (Focaloid), I want the bot to have a scalable architecture, so that future integrations (like live chat and third-party API connections) are possible.","1. The system should allow easy integration with third-party HRMS and payroll systems in Phase 2.
+2. The bot should be upgradeable to support live HR chat interactions.
+3. The architecture should support API-based data retrieval in future phases.",,,8,
+8,Server setup,"As a vendor (Focaloid), I want to set up the server for hosting the application, so that the application is securely deployed, scalable, and accessible to end-users.","1. The UAT server must be configured first.
+2. If a clone of the UAT server is available, the production server should be configured using the clone.
+3. If the clone server is not available on time, an additional effort of four days will be required for manual configuration of the production server.
+4. Both UAT and production servers should be provided and validated for stability and performance.
+5. The application should be accessible and functional after deployment on both servers.
+6. Required dependencies should be installed, and the project setup should be completed.
+7. Reverse Proxy (Nginx) should be configured to manage traffic efficiently",Installing dependencies,,16,"The current estimation for server setup accounts only for the UAT server configuration. If a clone server of the already configured UAT server is not provided on time, an additional effort of four days will be required to manually configure the production setup."
+,,,,Setup and Configure the Project,,8,
+,,,,Configure Reverse Proxy (Nginx),,8,
+9,DB setup,"As a vendor (Focaloid), I want to set up a new database that is identical to the one used for investor or distributor services, so that we can reuse it for the HR bot.","1. The new database should replicate the structure of the investor/distributor services database.
+2. Minor modifications may be required to accommodate HR bot-specific needs.
+3. Ensure data integrity and consistency with existing services.",,,16,
+10,Admin Panel Authentication,"As a vendor (Focaloid), I want to authenticate Axis admin users to the backend admin panel, so that can manage and edit menus and messages on the admin panel. ","1. Axis admin users should be able to log in using a valid username and password.
+2. Implement authentication mechanisms to ensure secure access.
+3. Provide role-based access control (RBAC) to restrict functionalities based on user roles.
+4. Display appropriate error messages for invalid login attempts.",,16,16,Axis must provide API for login of HR admin or other users that are accessing admin panels just like ADLogin used in investor and distributor services
+11,Project Setup,"As a vendor (Focaloid), I want to clone the existing investor services codebase, so that I can make the necessary minor modifications for the HR Bot project.","1. Clone the existing investor services codebase into a new repository.
+2. Update configurations and dependencies as required for the HR Bot project.
+3. Implement minor modifications specific to the HR Bot functionality.
+4. Conduct initial testing to verify that the modified codebase runs without errors.",,16,16,
+,,,,,44,192,
+,,,,Total (FE+BE),236,,
+,,,,Dev Testing,13.6,,
+,,,,QA,50,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
